@@ -200,26 +200,41 @@ struct
            | `Change, (Change (next_key, _) as change) :: diffs
              when Key.comparator.compare next_key key = 0 ->
              Sequence.Step.Skip
-               (In_group { key; type_; diffs; group = Stored_reversed.snoc group change })
+               { state =
+                   In_group
+                     { key; type_; diffs; group = Stored_reversed.snoc group change }
+               }
            | `Add, (Add (next_key, _) as add) :: diffs
              when Key.comparator.compare next_key key = 0 ->
              Sequence.Step.Skip
-               (In_group { key; type_; diffs; group = Stored_reversed.snoc group add })
-           | _, diffs -> Sequence.Step.Yield (group, Out_of_group { diffs }))
+               { state =
+                   In_group { key; type_; diffs; group = Stored_reversed.snoc group add }
+               }
+           | _, diffs ->
+             Sequence.Step.Yield { value = group; state = Out_of_group { diffs } })
         | Out_of_group { diffs } ->
           (match diffs with
            | [] -> Sequence.Step.Done
            | (Remove _ as single) :: diffs ->
-             Sequence.Step.Yield (Stored_reversed.singleton single, Out_of_group { diffs })
+             Sequence.Step.Yield
+               { value = Stored_reversed.singleton single; state = Out_of_group { diffs } }
            | (Add (key, _) as add) :: diffs ->
              Sequence.Step.Skip
-               (In_group
-                  { key; type_ = `Add; group = Stored_reversed.singleton add; diffs })
+               { state =
+                   In_group
+                     { key; type_ = `Add; group = Stored_reversed.singleton add; diffs }
+               }
            | (Change (key, _) as change) :: diffs ->
              Sequence.Step.Skip
-               (In_group
-                  { key; type_ = `Change; group = Stored_reversed.singleton change; diffs })
-           | Idle () :: diffs -> Sequence.Step.Skip (Out_of_group { diffs }))
+               { state =
+                   In_group
+                     { key
+                     ; type_ = `Change
+                     ; group = Stored_reversed.singleton change
+                     ; diffs
+                     }
+               }
+           | Idle () :: diffs -> Sequence.Step.Skip { state = Out_of_group { diffs } })
       in
       fun diffs -> Sequence.unfold_step ~init:(Out_of_group { diffs }) ~f:step
     in

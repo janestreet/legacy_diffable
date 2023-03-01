@@ -17,6 +17,7 @@ depends: [
   "streamable"
   "dune"            {>= "2.0.0"}
 ]
+available: arch != "arm32" & arch != "x86_32"
 synopsis: "An interface for diffs."
 description: "
 Diffable interface.
