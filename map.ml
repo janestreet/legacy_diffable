@@ -217,7 +217,9 @@ struct
            | [] -> Sequence.Step.Done
            | (Remove _ as single) :: diffs ->
              Sequence.Step.Yield
-               { value = Stored_reversed.singleton single; state = Out_of_group { diffs } }
+               { value = Stored_reversed.singleton single
+               ; state = Out_of_group { diffs }
+               }
            | (Add (key, _) as add) :: diffs ->
              Sequence.Step.Skip
                { state =
@@ -249,8 +251,7 @@ struct
               (Value.of_diffs
                  (Stored_reversed.map_to_list ds ~f:(function
                     | Change _ | Remove _ | Idle () ->
-                      failwith
-                        "BUG: The impossible happened. Change/Remove in add group."
+                      failwith "BUG: The impossible happened. Change/Remove in add group."
                     | Add (_, x) -> x)))
         | [ Remove key ] -> Map.remove t key
         | Change (key, _) :: _ ->
@@ -262,13 +263,12 @@ struct
                 value
                 (Stored_reversed.map_to_list ds ~f:(function
                    | Add _ | Remove _ | Idle () ->
-                     failwith
-                       "BUG: The impossible happened. Add/Remove in change group."
+                     failwith "BUG: The impossible happened. Add/Remove in change group."
                    | Change (_, x) -> x)))
         | _ ->
           failwith
-            "BUG: The impossible happened. Expected single Add/Remove or multiple \
-             Change in a group.")
+            "BUG: The impossible happened. Expected single Add/Remove or multiple Change \
+             in a group.")
   ;;
 
   let diffs ~from ~to_ : Update.t =

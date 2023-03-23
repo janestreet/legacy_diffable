@@ -22,8 +22,7 @@ module Make4_plain
     (A : Diffable_intf.S_plain)
     (B : Diffable_intf.S_plain)
     (C : Diffable_intf.S_plain)
-    (D : Diffable_intf.S_plain) :
-  Diffable_intf.S_plain with type t = A.t * B.t * C.t * D.t
+    (D : Diffable_intf.S_plain) : Diffable_intf.S_plain with type t = A.t * B.t * C.t * D.t
 
 module Make5
     (A : Diffable_intf.S)
@@ -46,8 +45,7 @@ module Make6
     (C : Diffable_intf.S)
     (D : Diffable_intf.S)
     (E : Diffable_intf.S)
-    (F : Diffable_intf.S) :
-  Diffable_intf.S with type t = A.t * B.t * C.t * D.t * E.t * F.t
+    (F : Diffable_intf.S) : Diffable_intf.S with type t = A.t * B.t * C.t * D.t * E.t * F.t
 
 module Make6_plain
     (A : Diffable_intf.S_plain)
