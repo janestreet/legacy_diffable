@@ -5,6 +5,7 @@ module Make_streamable = Diffable_streamable.Make
 module Make_streamable_rpc = Diffable_streamable.Make_rpc
 module Map = Map
 module Option = Option
+module Result = Result
 module Set = Set
 module Tuples = Tuples
 
