@@ -1,10 +1,10 @@
 open Core
 
 module Make_plain (X : sig
-    type t
+  type t
 
-    include Diffable_intf.S_plain with type t := t
-  end) =
+  include Diffable_intf.S_plain with type t := t
+end) =
 struct
   module Update = struct
     module Diff = struct
@@ -23,23 +23,23 @@ struct
   let update t (diffs : Update.t) =
     Sequence.of_list diffs
     |> Sequence.group ~break:(fun l r ->
-      match l, r with
-      | Change _, Change _ -> false
-      | _ -> true)
+         match l, r with
+         | Change _, Change _ -> false
+         | _ -> true)
     |> Sequence.fold ~init:t ~f:(fun t change ->
-      match change with
-      | [ Idle ] -> t
-      | [ Set_to_none ] -> None
-      | Change _ :: _ as diffs ->
-        let diffs =
-          List.map diffs ~f:(function
-            | Idle | Set_to_none -> failwith "BUG: Hit impossible case"
-            | Change x -> x)
-        in
-        (match t with
-         | None -> Some (X.of_diffs diffs)
-         | Some t -> Some (X.update t diffs))
-      | _ -> failwith "BUG: Hit impossible case")
+         match change with
+         | [ Idle ] -> t
+         | [ Set_to_none ] -> None
+         | Change _ :: _ as diffs ->
+           let diffs =
+             List.map diffs ~f:(function
+               | Idle | Set_to_none -> failwith "BUG: Hit impossible case"
+               | Change x -> x)
+           in
+           (match t with
+            | None -> Some (X.of_diffs diffs)
+            | Some t -> Some (X.update t diffs))
+         | _ -> failwith "BUG: Hit impossible case")
   ;;
 
   let diffs ~from ~to_ : Update.t =
@@ -56,10 +56,10 @@ struct
 end
 
 module Make (X : sig
-    type t
+  type t
 
-    include Diffable_intf.S with type t := t
-  end) =
+  include Diffable_intf.S with type t := t
+end) =
 struct
   module Plain = Make_plain (X)
 
@@ -78,9 +78,9 @@ struct
   include (
     Plain :
       module type of struct
-      include Plain
-    end
-    with module Update := Plain.Update)
+        include Plain
+      end
+      with module Update := Plain.Update)
 end
 
 let%test_module "diffable option" =

@@ -1,14 +1,14 @@
 open Core
 
 module Make_plain (Key : sig
-    type t [@@deriving sexp_of]
+  type t [@@deriving sexp_of]
 
-    include Comparator.S with type t := t
-  end) (Value : sig
-          type t [@@deriving sexp_of]
+  include Comparator.S with type t := t
+end) (Value : sig
+  type t [@@deriving sexp_of]
 
-          val equal : t -> t -> bool
-        end) =
+  val equal : t -> t -> bool
+end) =
 struct
   module Update = struct
     module Diff = struct
@@ -62,14 +62,14 @@ struct
 end
 
 module Make (Key : sig
-    type t [@@deriving sexp, bin_io]
+  type t [@@deriving sexp, bin_io]
 
-    include Comparator.S with type t := t
-  end) (Value : sig
-          type t [@@deriving sexp, bin_io]
+  include Comparator.S with type t := t
+end) (Value : sig
+  type t [@@deriving sexp, bin_io]
 
-          val equal : t -> t -> bool
-        end) =
+  val equal : t -> t -> bool
+end) =
 struct
   module Plain = Make_plain (Key) (Value)
 
@@ -88,9 +88,9 @@ struct
   include (
     Plain :
       module type of struct
-      include Plain
-    end
-    with module Update := Plain.Update)
+        include Plain
+      end
+      with module Update := Plain.Update)
 end
 
 let%test_module "tests of Make and Make_plain" =
@@ -150,14 +150,14 @@ let%test_module "tests of Make and Make_plain" =
 ;;
 
 module Make_plain_with_value_diffs (Key : sig
-    type t [@@deriving sexp_of]
+  type t [@@deriving sexp_of]
 
-    include Comparator.S with type t := t
-  end) (Value : sig
-          type t
+  include Comparator.S with type t := t
+end) (Value : sig
+  type t
 
-          include Diffable_intf.S_plain with type t := t
-        end) =
+  include Diffable_intf.S_plain with type t := t
+end) =
 struct
   module Update = struct
     module Diff = struct
@@ -166,7 +166,7 @@ struct
         | Change of Key.t * Value.Update.Diff.t
         | Add of Key.t * Value.Update.Diff.t
         | Idle of unit
-        (** We add a [unit] argument so matching the more common cases is more performant
+            (** We add a [unit] argument so matching the more common cases is more performant
             (no check for immediate vs. block). *)
       [@@deriving sexp_of]
 
@@ -250,9 +250,9 @@ struct
             ~data:
               (Value.of_diffs
                  (Stored_reversed.map_to_list ds ~f:(function
-                    | Change _ | Remove _ | Idle () ->
-                      failwith "BUG: The impossible happened. Change/Remove in add group."
-                    | Add (_, x) -> x)))
+                   | Change _ | Remove _ | Idle () ->
+                     failwith "BUG: The impossible happened. Change/Remove in add group."
+                   | Add (_, x) -> x)))
         | [ Remove key ] -> Map.remove t key
         | Change (key, _) :: _ ->
           Map.update t key ~f:(function
@@ -262,9 +262,9 @@ struct
               Value.update
                 value
                 (Stored_reversed.map_to_list ds ~f:(function
-                   | Add _ | Remove _ | Idle () ->
-                     failwith "BUG: The impossible happened. Add/Remove in change group."
-                   | Change (_, x) -> x)))
+                  | Add _ | Remove _ | Idle () ->
+                    failwith "BUG: The impossible happened. Add/Remove in change group."
+                  | Change (_, x) -> x)))
         | _ ->
           failwith
             "BUG: The impossible happened. Expected single Add/Remove or multiple Change \
@@ -282,14 +282,14 @@ struct
       from
       to_
       ~f:(fun acc (k, d) ->
-        match d with
-        | `Left _ -> Stored_reversed.snoc acc (Update.Diff.Remove k)
-        | `Right to_ ->
-          let diffs = Value.to_diffs to_ in
-          Stored_reversed.map_append acc diffs ~f:(fun x -> Update.Diff.Add (k, x))
-        | `Unequal (from, to_) ->
-          let diffs = Value.diffs ~from ~to_ in
-          Stored_reversed.map_append acc diffs ~f:(fun x -> Update.Diff.Change (k, x)))
+      match d with
+      | `Left _ -> Stored_reversed.snoc acc (Update.Diff.Remove k)
+      | `Right to_ ->
+        let diffs = Value.to_diffs to_ in
+        Stored_reversed.map_append acc diffs ~f:(fun x -> Update.Diff.Add (k, x))
+      | `Unequal (from, to_) ->
+        let diffs = Value.diffs ~from ~to_ in
+        Stored_reversed.map_append acc diffs ~f:(fun x -> Update.Diff.Change (k, x)))
     |> Stored_reversed.to_list
   ;;
 
@@ -309,14 +309,14 @@ struct
 end
 
 module Make_with_value_diffs (Key : sig
-    type t [@@deriving sexp, bin_io]
+  type t [@@deriving sexp, bin_io]
 
-    include Comparator.S with type t := t
-  end) (Value : sig
-          type t
+  include Comparator.S with type t := t
+end) (Value : sig
+  type t
 
-          include Diffable_intf.S with type t := t
-        end) =
+  include Diffable_intf.S with type t := t
+end) =
 struct
   module Plain = Make_plain_with_value_diffs (Key) (Value)
 
@@ -336,9 +336,9 @@ struct
   include (
     Plain :
       module type of struct
-      include Plain
-    end
-    with module Update := Plain.Update)
+        include Plain
+      end
+      with module Update := Plain.Update)
 end
 
 let%test_module "tests of Make_with_value_diffs" =

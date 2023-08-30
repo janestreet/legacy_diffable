@@ -63,123 +63,123 @@ module Make2 (A : Diffable_intf.S) (B : Diffable_intf.S) = struct
   include (
     Plain :
       module type of struct
-      include Plain
-    end
-    with module Update := Plain.Update)
+        include Plain
+      end
+      with module Update := Plain.Update)
 end
 
 module Make3_plain
-    (A : Diffable_intf.S_plain)
-    (B : Diffable_intf.S_plain)
-    (C : Diffable_intf.S_plain) =
+  (A : Diffable_intf.S_plain)
+  (B : Diffable_intf.S_plain)
+  (C : Diffable_intf.S_plain) =
   Iso.Make_plain
     (Make2_plain (A) (Make2_plain (B) (C)))
-    (struct
-      type t = A.t * B.t * C.t
+       (struct
+         type t = A.t * B.t * C.t
 
-      let forwards (a, (b, c)) = a, b, c
-      let backwards (a, b, c) = a, (b, c)
-    end)
+         let forwards (a, (b, c)) = a, b, c
+         let backwards (a, b, c) = a, (b, c)
+       end)
 
 module Make3 (A : Diffable_intf.S) (B : Diffable_intf.S) (C : Diffable_intf.S) =
   Iso.Make
     (Make2 (A) (Make2 (B) (C)))
-    (struct
-      type t = A.t * B.t * C.t
+       (struct
+         type t = A.t * B.t * C.t
 
-      let forwards (a, (b, c)) = a, b, c
-      let backwards (a, b, c) = a, (b, c)
-    end)
+         let forwards (a, (b, c)) = a, b, c
+         let backwards (a, b, c) = a, (b, c)
+       end)
 
 module Make4_plain
-    (A : Diffable_intf.S_plain)
-    (B : Diffable_intf.S_plain)
-    (C : Diffable_intf.S_plain)
-    (D : Diffable_intf.S_plain) =
+  (A : Diffable_intf.S_plain)
+  (B : Diffable_intf.S_plain)
+  (C : Diffable_intf.S_plain)
+  (D : Diffable_intf.S_plain) =
   Iso.Make_plain
     (Make2_plain (A) (Make3_plain (B) (C) (D)))
-    (struct
-      type t = A.t * B.t * C.t * D.t
+       (struct
+         type t = A.t * B.t * C.t * D.t
 
-      let forwards (a, (b, c, d)) = a, b, c, d
-      let backwards (a, b, c, d) = a, (b, c, d)
-    end)
+         let forwards (a, (b, c, d)) = a, b, c, d
+         let backwards (a, b, c, d) = a, (b, c, d)
+       end)
 
 module Make4
-    (A : Diffable_intf.S)
-    (B : Diffable_intf.S)
-    (C : Diffable_intf.S)
-    (D : Diffable_intf.S) =
+  (A : Diffable_intf.S)
+  (B : Diffable_intf.S)
+  (C : Diffable_intf.S)
+  (D : Diffable_intf.S) =
   Iso.Make
     (Make2 (A) (Make3 (B) (C) (D)))
-    (struct
-      type t = A.t * B.t * C.t * D.t
+       (struct
+         type t = A.t * B.t * C.t * D.t
 
-      let forwards (a, (b, c, d)) = a, b, c, d
-      let backwards (a, b, c, d) = a, (b, c, d)
-    end)
+         let forwards (a, (b, c, d)) = a, b, c, d
+         let backwards (a, b, c, d) = a, (b, c, d)
+       end)
 
 module Make5_plain
-    (A : Diffable_intf.S_plain)
-    (B : Diffable_intf.S_plain)
-    (C : Diffable_intf.S_plain)
-    (D : Diffable_intf.S_plain)
-    (E : Diffable_intf.S_plain) =
+  (A : Diffable_intf.S_plain)
+  (B : Diffable_intf.S_plain)
+  (C : Diffable_intf.S_plain)
+  (D : Diffable_intf.S_plain)
+  (E : Diffable_intf.S_plain) =
   Iso.Make_plain
     (Make2_plain (A) (Make4_plain (B) (C) (D) (E)))
-    (struct
-      type t = A.t * B.t * C.t * D.t * E.t
+       (struct
+         type t = A.t * B.t * C.t * D.t * E.t
 
-      let forwards (a, (b, c, d, e)) = a, b, c, d, e
-      let backwards (a, b, c, d, e) = a, (b, c, d, e)
-    end)
+         let forwards (a, (b, c, d, e)) = a, b, c, d, e
+         let backwards (a, b, c, d, e) = a, (b, c, d, e)
+       end)
 
 module Make5
-    (A : Diffable_intf.S)
-    (B : Diffable_intf.S)
-    (C : Diffable_intf.S)
-    (D : Diffable_intf.S)
-    (E : Diffable_intf.S) =
+  (A : Diffable_intf.S)
+  (B : Diffable_intf.S)
+  (C : Diffable_intf.S)
+  (D : Diffable_intf.S)
+  (E : Diffable_intf.S) =
   Iso.Make
     (Make2 (A) (Make4 (B) (C) (D) (E)))
-    (struct
-      type t = A.t * B.t * C.t * D.t * E.t
+       (struct
+         type t = A.t * B.t * C.t * D.t * E.t
 
-      let forwards (a, (b, c, d, e)) = a, b, c, d, e
-      let backwards (a, b, c, d, e) = a, (b, c, d, e)
-    end)
+         let forwards (a, (b, c, d, e)) = a, b, c, d, e
+         let backwards (a, b, c, d, e) = a, (b, c, d, e)
+       end)
 
 module Make6_plain
-    (A : Diffable_intf.S_plain)
-    (B : Diffable_intf.S_plain)
-    (C : Diffable_intf.S_plain)
-    (D : Diffable_intf.S_plain)
-    (E : Diffable_intf.S_plain)
-    (F : Diffable_intf.S_plain) =
+  (A : Diffable_intf.S_plain)
+  (B : Diffable_intf.S_plain)
+  (C : Diffable_intf.S_plain)
+  (D : Diffable_intf.S_plain)
+  (E : Diffable_intf.S_plain)
+  (F : Diffable_intf.S_plain) =
   Iso.Make_plain
     (Make2_plain (A) (Make5_plain (B) (C) (D) (E) (F)))
-    (struct
-      type t = A.t * B.t * C.t * D.t * E.t * F.t
+       (struct
+         type t = A.t * B.t * C.t * D.t * E.t * F.t
 
-      let forwards (a, (b, c, d, e, f)) = a, b, c, d, e, f
-      let backwards (a, b, c, d, e, f) = a, (b, c, d, e, f)
-    end)
+         let forwards (a, (b, c, d, e, f)) = a, b, c, d, e, f
+         let backwards (a, b, c, d, e, f) = a, (b, c, d, e, f)
+       end)
 
 module Make6
-    (A : Diffable_intf.S)
-    (B : Diffable_intf.S)
-    (C : Diffable_intf.S)
-    (D : Diffable_intf.S)
-    (E : Diffable_intf.S)
-    (F : Diffable_intf.S) =
+  (A : Diffable_intf.S)
+  (B : Diffable_intf.S)
+  (C : Diffable_intf.S)
+  (D : Diffable_intf.S)
+  (E : Diffable_intf.S)
+  (F : Diffable_intf.S) =
   Iso.Make
     (Make2 (A) (Make5 (B) (C) (D) (E) (F)))
-    (struct
-      type t = A.t * B.t * C.t * D.t * E.t * F.t
+       (struct
+         type t = A.t * B.t * C.t * D.t * E.t * F.t
 
-      let forwards (a, (b, c, d, e, f)) = a, b, c, d, e, f
-      let backwards (a, b, c, d, e, f) = a, (b, c, d, e, f)
-    end)
+         let forwards (a, (b, c, d, e, f)) = a, b, c, d, e, f
+         let backwards (a, b, c, d, e, f) = a, (b, c, d, e, f)
+       end)
 
 let%test_module "tests" =
   (module struct
@@ -242,7 +242,7 @@ let%test_module "tests" =
         ~shrinker:(Shrinker.tuple2 quickcheck_shrinker quickcheck_shrinker)
         ~sexp_of:[%sexp_of: t * t]
         ~f:(fun (from, to_) ->
-          [%test_result: t] ~expect:to_ (update from (diffs ~from ~to_)))
+        [%test_result: t] ~expect:to_ (update from (diffs ~from ~to_)))
     ;;
   end)
 ;;

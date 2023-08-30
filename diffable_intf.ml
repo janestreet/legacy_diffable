@@ -1,6 +1,5 @@
 open Core
 
-
 module type S_plain = sig
   type t
 

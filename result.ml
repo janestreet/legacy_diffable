@@ -99,9 +99,9 @@ module Make (O : Diffable_intf.S) (E : Diffable_intf.S) = struct
   include (
     Plain :
       module type of struct
-      include Plain
-    end
-    with module Update := Plain.Update)
+        include Plain
+      end
+      with module Update := Plain.Update)
 end
 
 let%test_module "diffable option" =

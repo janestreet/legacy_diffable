@@ -1,10 +1,10 @@
 open Core
 
 module Make_plain (Key : sig
-    type t [@@deriving sexp_of]
+  type t [@@deriving sexp_of]
 
-    include Comparator.S with type t := t
-  end) =
+  include Comparator.S with type t := t
+end) =
 struct
   module Update = struct
     module Diff = struct
@@ -37,8 +37,8 @@ struct
   let diffs ~from ~to_ : Update.t =
     Set.symmetric_diff from to_
     |> Sequence.map ~f:(function
-      | First k -> Update.Diff.Remove k
-      | Second k -> Add k)
+         | First k -> Update.Diff.Remove k
+         | Second k -> Add k)
     |> Sequence.to_list
   ;;
 
@@ -59,10 +59,10 @@ struct
 end
 
 module Make (Key : sig
-    type t [@@deriving sexp, bin_io]
+  type t [@@deriving sexp, bin_io]
 
-    include Comparator.S with type t := t
-  end) =
+  include Comparator.S with type t := t
+end) =
 struct
   module Plain = Make_plain (Key)
 
@@ -81,9 +81,9 @@ struct
   include (
     Plain :
       module type of struct
-      include Plain
-    end
-    with module Update := Plain.Update)
+        include Plain
+      end
+      with module Update := Plain.Update)
 end
 
 let%test_module "tests" =
@@ -105,8 +105,8 @@ let%test_module "tests" =
         (Quickcheck.Generator.list Int.quickcheck_generator)
         ~sexp_of:[%sexp_of: int list]
         ~f:(fun ns ->
-          let t = T.Set.of_list ns in
-          [%test_result: T.Set.t] ~expect:t (of_diffs (to_diffs t)))
+        let t = T.Set.of_list ns in
+        [%test_result: T.Set.t] ~expect:t (of_diffs (to_diffs t)))
     ;;
 
     let%test_unit "atomic diff/update works" =
