@@ -3,7 +3,7 @@ open Core
 module Make (T : sig
   type t
 
-  include Diffable_intf.S with type t := t
+  include Legacy_diffable_intf.S with type t := t
 end) =
 struct
   include T
@@ -24,7 +24,7 @@ end
 module Make_rpc (T : sig
   type t
 
-  include Diffable_intf.S_plain with type t := t
+  include Legacy_diffable_intf.S_plain with type t := t
 end)
 (Diff : sig
   type t [@@deriving bin_io]

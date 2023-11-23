@@ -1,57 +1,64 @@
-module Make2 (A : Diffable_intf.S) (B : Diffable_intf.S) :
-  Diffable_intf.S with type t = A.t * B.t
+module Make2 (A : Legacy_diffable_intf.S) (B : Legacy_diffable_intf.S) :
+  Legacy_diffable_intf.S with type t = A.t * B.t
 
-module Make2_plain (A : Diffable_intf.S_plain) (B : Diffable_intf.S_plain) :
-  Diffable_intf.S_plain with type t = A.t * B.t
+module Make2_plain (A : Legacy_diffable_intf.S_plain) (B : Legacy_diffable_intf.S_plain) :
+  Legacy_diffable_intf.S_plain with type t = A.t * B.t
 
-module Make3 (A : Diffable_intf.S) (B : Diffable_intf.S) (C : Diffable_intf.S) :
-  Diffable_intf.S with type t = A.t * B.t * C.t
+module Make3
+  (A : Legacy_diffable_intf.S)
+  (B : Legacy_diffable_intf.S)
+  (C : Legacy_diffable_intf.S) : Legacy_diffable_intf.S with type t = A.t * B.t * C.t
 
 module Make3_plain
-  (A : Diffable_intf.S_plain)
-  (B : Diffable_intf.S_plain)
-  (C : Diffable_intf.S_plain) : Diffable_intf.S_plain with type t = A.t * B.t * C.t
+  (A : Legacy_diffable_intf.S_plain)
+  (B : Legacy_diffable_intf.S_plain)
+  (C : Legacy_diffable_intf.S_plain) :
+  Legacy_diffable_intf.S_plain with type t = A.t * B.t * C.t
 
 module Make4
-  (A : Diffable_intf.S)
-  (B : Diffable_intf.S)
-  (C : Diffable_intf.S)
-  (D : Diffable_intf.S) : Diffable_intf.S with type t = A.t * B.t * C.t * D.t
+  (A : Legacy_diffable_intf.S)
+  (B : Legacy_diffable_intf.S)
+  (C : Legacy_diffable_intf.S)
+  (D : Legacy_diffable_intf.S) :
+  Legacy_diffable_intf.S with type t = A.t * B.t * C.t * D.t
 
 module Make4_plain
-  (A : Diffable_intf.S_plain)
-  (B : Diffable_intf.S_plain)
-  (C : Diffable_intf.S_plain)
-  (D : Diffable_intf.S_plain) : Diffable_intf.S_plain with type t = A.t * B.t * C.t * D.t
+  (A : Legacy_diffable_intf.S_plain)
+  (B : Legacy_diffable_intf.S_plain)
+  (C : Legacy_diffable_intf.S_plain)
+  (D : Legacy_diffable_intf.S_plain) :
+  Legacy_diffable_intf.S_plain with type t = A.t * B.t * C.t * D.t
 
 module Make5
-  (A : Diffable_intf.S)
-  (B : Diffable_intf.S)
-  (C : Diffable_intf.S)
-  (D : Diffable_intf.S)
-  (E : Diffable_intf.S) : Diffable_intf.S with type t = A.t * B.t * C.t * D.t * E.t
+  (A : Legacy_diffable_intf.S)
+  (B : Legacy_diffable_intf.S)
+  (C : Legacy_diffable_intf.S)
+  (D : Legacy_diffable_intf.S)
+  (E : Legacy_diffable_intf.S) :
+  Legacy_diffable_intf.S with type t = A.t * B.t * C.t * D.t * E.t
 
 module Make5_plain
-  (A : Diffable_intf.S_plain)
-  (B : Diffable_intf.S_plain)
-  (C : Diffable_intf.S_plain)
-  (D : Diffable_intf.S_plain)
-  (E : Diffable_intf.S_plain) :
-  Diffable_intf.S_plain with type t = A.t * B.t * C.t * D.t * E.t
+  (A : Legacy_diffable_intf.S_plain)
+  (B : Legacy_diffable_intf.S_plain)
+  (C : Legacy_diffable_intf.S_plain)
+  (D : Legacy_diffable_intf.S_plain)
+  (E : Legacy_diffable_intf.S_plain) :
+  Legacy_diffable_intf.S_plain with type t = A.t * B.t * C.t * D.t * E.t
 
 module Make6
-  (A : Diffable_intf.S)
-  (B : Diffable_intf.S)
-  (C : Diffable_intf.S)
-  (D : Diffable_intf.S)
-  (E : Diffable_intf.S)
-  (F : Diffable_intf.S) : Diffable_intf.S with type t = A.t * B.t * C.t * D.t * E.t * F.t
+  (A : Legacy_diffable_intf.S)
+  (B : Legacy_diffable_intf.S)
+  (C : Legacy_diffable_intf.S)
+  (D : Legacy_diffable_intf.S)
+  (E : Legacy_diffable_intf.S)
+  (F : Legacy_diffable_intf.S) :
+  Legacy_diffable_intf.S with type t = A.t * B.t * C.t * D.t * E.t * F.t
 
 module Make6_plain
-  (A : Diffable_intf.S_plain)
-  (B : Diffable_intf.S_plain)
-  (C : Diffable_intf.S_plain)
-  (D : Diffable_intf.S_plain)
-  (E : Diffable_intf.S_plain)
-  (F : Diffable_intf.S_plain) :
-  Diffable_intf.S_plain with type t = A.t * B.t * C.t * D.t * E.t * F.t
+  (A : Legacy_diffable_intf.S_plain)
+  (B : Legacy_diffable_intf.S_plain)
+  (C : Legacy_diffable_intf.S_plain)
+  (D : Legacy_diffable_intf.S_plain)
+  (E : Legacy_diffable_intf.S_plain)
+  (F : Legacy_diffable_intf.S_plain) :
+  Legacy_diffable_intf.S_plain with type t = A.t * B.t * C.t * D.t * E.t * F.t

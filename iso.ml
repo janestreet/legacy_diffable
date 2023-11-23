@@ -1,7 +1,7 @@
 open! Core
 
 module Make_plain
-  (S : Diffable_intf.S_plain) (X : sig
+  (S : Legacy_diffable_intf.S_plain) (X : sig
     type t
 
     val forwards : S.t -> t
@@ -23,7 +23,7 @@ struct
 end
 
 module Make
-  (S : Diffable_intf.S) (X : sig
+  (S : Legacy_diffable_intf.S) (X : sig
     type t
 
     val forwards : S.t -> t

@@ -3,7 +3,7 @@ module Make (V : sig
 
   val equal : t -> t -> bool
 end) : sig
-  include Diffable_intf.S with type t = V.t and type Update.Diff.t = V.t
+  include Legacy_diffable_intf.S with type t = V.t and type Update.Diff.t = V.t
 end
 
 module Make_plain (V : sig
@@ -11,5 +11,5 @@ module Make_plain (V : sig
 
   val equal : t -> t -> bool
 end) : sig
-  include Diffable_intf.S_plain with type t = V.t and type Update.Diff.t = V.t
+  include Legacy_diffable_intf.S_plain with type t = V.t and type Update.Diff.t = V.t
 end

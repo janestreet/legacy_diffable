@@ -156,7 +156,7 @@ module Make_plain_with_value_diffs (Key : sig
 end) (Value : sig
   type t
 
-  include Diffable_intf.S_plain with type t := t
+  include Legacy_diffable_intf.S_plain with type t := t
 end) =
 struct
   module Update = struct
@@ -315,7 +315,7 @@ module Make_with_value_diffs (Key : sig
 end) (Value : sig
   type t
 
-  include Diffable_intf.S with type t := t
+  include Legacy_diffable_intf.S with type t := t
 end) =
 struct
   module Plain = Make_plain_with_value_diffs (Key) (Value)

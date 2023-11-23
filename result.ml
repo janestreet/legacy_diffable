@@ -1,6 +1,7 @@
 open Core
 
-module Make_plain (O : Diffable_intf.S_plain) (E : Diffable_intf.S_plain) = struct
+module Make_plain (O : Legacy_diffable_intf.S_plain) (E : Legacy_diffable_intf.S_plain) =
+struct
   module Update = struct
     module Diff = struct
       type t =
@@ -82,7 +83,7 @@ module Make_plain (O : Diffable_intf.S_plain) (E : Diffable_intf.S_plain) = stru
   ;;
 end
 
-module Make (O : Diffable_intf.S) (E : Diffable_intf.S) = struct
+module Make (O : Legacy_diffable_intf.S) (E : Legacy_diffable_intf.S) = struct
   module Plain = Make_plain (O) (E)
 
   module Update = struct

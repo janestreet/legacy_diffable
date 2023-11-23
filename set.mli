@@ -5,7 +5,7 @@ module Make (Key : sig
 
   include Comparator.S with type t := t
 end) : sig
-  include Diffable_intf.S with type t = Base.Set.M(Key).t
+  include Legacy_diffable_intf.S with type t = Base.Set.M(Key).t
 
   val empty : t
 end
@@ -15,7 +15,7 @@ module Make_plain (Key : sig
 
   include Comparator.S with type t := t
 end) : sig
-  include Diffable_intf.S_plain with type t = Base.Set.M(Key).t
+  include Legacy_diffable_intf.S_plain with type t = Base.Set.M(Key).t
 
   val empty : t
 end

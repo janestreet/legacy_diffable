@@ -23,7 +23,7 @@ end) : sig
     type t = Diff.t list [@@deriving bin_io, sexp]
   end
 
-  include Diffable_intf.S with type t := t with module Update := Update
+  include Legacy_diffable_intf.S with type t := t with module Update := Update
 
   val empty : t
 end
@@ -51,7 +51,7 @@ end) : sig
     type t = Diff.t list [@@deriving sexp_of]
   end
 
-  include Diffable_intf.S_plain with type t := t and module Update := Update
+  include Legacy_diffable_intf.S_plain with type t := t and module Update := Update
 
   val empty : t
 end
@@ -63,7 +63,7 @@ module Make_with_value_diffs (Key : sig
 end) (Value : sig
   type t
 
-  include Diffable_intf.S with type t := t
+  include Legacy_diffable_intf.S with type t := t
 end) : sig
   module Update : sig
     module Diff : sig
@@ -79,7 +79,9 @@ end) : sig
   end
 
   include
-    Diffable_intf.S with type t = Value.t Base.Map.M(Key).t and module Update := Update
+    Legacy_diffable_intf.S
+      with type t = Value.t Base.Map.M(Key).t
+       and module Update := Update
 
   val empty : t
 end
@@ -91,7 +93,7 @@ module Make_plain_with_value_diffs (Key : sig
 end) (Value : sig
   type t
 
-  include Diffable_intf.S_plain with type t := t
+  include Legacy_diffable_intf.S_plain with type t := t
 end) : sig
   module Update : sig
     module Diff : sig
@@ -107,7 +109,7 @@ end) : sig
   end
 
   include
-    Diffable_intf.S_plain
+    Legacy_diffable_intf.S_plain
       with type t = Value.t Base.Map.M(Key).t
        and module Update := Update
 

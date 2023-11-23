@@ -3,7 +3,7 @@ open Core
 module Make_plain (X : sig
   type t
 
-  include Diffable_intf.S_plain with type t := t
+  include Legacy_diffable_intf.S_plain with type t := t
 end) =
 struct
   module Update = struct
@@ -58,7 +58,7 @@ end
 module Make (X : sig
   type t
 
-  include Diffable_intf.S with type t := t
+  include Legacy_diffable_intf.S with type t := t
 end) =
 struct
   module Plain = Make_plain (X)
