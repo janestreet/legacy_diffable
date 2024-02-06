@@ -1,2 +1,6 @@
-(library (name legacy_diffable) (public_name legacy_diffable)
- (libraries core streamable stored_reversed) (preprocess (pps ppx_jane)))
+(library
+ (name legacy_diffable)
+ (public_name legacy_diffable)
+ (libraries core streamable stored_reversed)
+ (preprocess
+  (pps ppx_jane)))
