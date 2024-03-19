@@ -123,7 +123,7 @@ let%test_module "tests of Make and Make_plain" =
          let%map to_diffs = List.gen_permutations (to_diffs t) in
          ({ t; to_diffs } : Test_case.t))
         ~f:(fun { t; to_diffs } -> [%test_result: t] ~expect:t (of_diffs to_diffs));
-      [%expect {||}]
+      [%expect {| |}]
     ;;
 
     let%expect_test "map diff/update works" =
@@ -144,7 +144,7 @@ let%test_module "tests of Make and Make_plain" =
          let%map diffs = List.gen_permutations (diffs ~from ~to_) in
          ({ from; to_; diffs } : Test_case.t))
         ~f:(fun { from; to_; diffs } -> [%test_result: t] ~expect:to_ (update from diffs));
-      [%expect {||}]
+      [%expect {| |}]
     ;;
   end)
 ;;
@@ -377,7 +377,7 @@ let%test_module "tests of Make_with_value_diffs" =
          let%map to_diffs = List.gen_permutations (to_diffs t) in
          ({ t; to_diffs } : Test_case.t))
         ~f:(fun { t; to_diffs } -> [%test_result: t] ~expect:t (of_diffs to_diffs));
-      [%expect {||}]
+      [%expect {| |}]
     ;;
 
     let%expect_test "map with value diffs diff/update works" =
@@ -398,7 +398,7 @@ let%test_module "tests of Make_with_value_diffs" =
          let%map diffs = List.gen_permutations (diffs ~from ~to_) in
          ({ from; to_; diffs } : Test_case.t))
         ~f:(fun { from; to_; diffs } -> [%test_result: t] ~expect:to_ (update from diffs));
-      [%expect {||}]
+      [%expect {| |}]
     ;;
   end)
 ;;
