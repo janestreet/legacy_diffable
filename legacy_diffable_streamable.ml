@@ -1,10 +1,10 @@
 open Core
 
 module Make (T : sig
-  type t
+    type t
 
-  include Legacy_diffable_intf.S with type t := t
-end) =
+    include Legacy_diffable_intf.S with type t := t
+  end) =
 struct
   include T
 
@@ -21,15 +21,16 @@ struct
   let finalize t = Stored_reversed.to_list t |> of_diffs
 end
 
-module Make_rpc (T : sig
-  type t
+module Make_rpc
+    (T : sig
+       type t
 
-  include Legacy_diffable_intf.S_plain with type t := t
-end)
-(Diff : sig
-  type t [@@deriving bin_io]
-end
-with type t = T.Update.Diff.t) : Streamable.S_rpc with type t := T.t = struct
+       include Legacy_diffable_intf.S_plain with type t := t
+     end)
+    (Diff : sig
+              type t [@@deriving bin_io]
+            end
+            with type t = T.Update.Diff.t) : Streamable.S_rpc with type t := T.t = struct
   include T
 
   module Intermediate = struct
@@ -90,18 +91,18 @@ let%test_module "streamable test" =
       let diffs ~from ~to_ =
         Map.symmetric_diff from to_ ~data_equal:(fun () () -> true)
         |> Sequence.map ~f:(fun (key, change) ->
-             match change with
-             | `Left () -> First key
-             | `Right () -> Second key
-             | `Unequal ((), ()) -> failwith "BUG: Impossible case")
+          match change with
+          | `Left () -> First key
+          | `Right () -> Second key
+          | `Unequal ((), ()) -> failwith "BUG: Impossible case")
         |> Sequence.to_list
       ;;
 
       let of_diffs diffs =
         Sequence.of_list diffs
         |> Sequence.map ~f:(function
-             | First _ -> failwith "of_diffs: Should not contain removals"
-             | Second x -> x, ())
+          | First _ -> failwith "of_diffs: Should not contain removals"
+          | Second x -> x, ())
         |> Map.Using_comparator.of_increasing_sequence ~comparator:Int.comparator
         |> Or_error.ok_exn
       ;;
@@ -147,7 +148,7 @@ let%test_module "streamable test" =
         ~shrinker:(Shrinker.tuple2 quickcheck_shrinker quickcheck_shrinker)
         ~sexp_of:[%sexp_of: t * t]
         ~f:(fun (from, to_) ->
-        [%test_result: t] ~expect:to_ (update from (diffs ~from ~to_)))
+          [%test_result: t] ~expect:to_ (update from (diffs ~from ~to_)))
     ;;
   end)
 ;;

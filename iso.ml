@@ -1,12 +1,13 @@
 open! Core
 
 module Make_plain
-  (S : Legacy_diffable_intf.S_plain) (X : sig
-    type t
+    (S : Legacy_diffable_intf.S_plain)
+    (X : sig
+       type t
 
-    val forwards : S.t -> t
-    val backwards : t -> S.t
-  end) =
+       val forwards : S.t -> t
+       val backwards : t -> S.t
+     end) =
 struct
   module Update = S.Update
 
@@ -23,12 +24,13 @@ struct
 end
 
 module Make
-  (S : Legacy_diffable_intf.S) (X : sig
-    type t
+    (S : Legacy_diffable_intf.S)
+    (X : sig
+       type t
 
-    val forwards : S.t -> t
-    val backwards : t -> S.t
-  end) =
+       val forwards : S.t -> t
+       val backwards : t -> S.t
+     end) =
 struct
   module Plain = Make_plain (S) (X)
   module Update = S.Update
@@ -77,7 +79,7 @@ let%test_module "tests" =
         ~shrinker:(Shrinker.tuple2 Int.quickcheck_shrinker Int.quickcheck_shrinker)
         ~sexp_of:[%sexp_of: t * t]
         ~f:(fun (from, to_) ->
-        [%test_result: int] ~expect:to_ (update from (diffs ~from ~to_)))
+          [%test_result: int] ~expect:to_ (update from (diffs ~from ~to_)))
     ;;
   end)
 ;;

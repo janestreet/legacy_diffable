@@ -1,14 +1,16 @@
 open Core
 
-module Make (Key : sig
-  type t [@@deriving sexp, bin_io]
+module Make
+    (Key : sig
+       type t [@@deriving sexp, bin_io]
 
-  include Comparator.S with type t := t
-end) (Value : sig
-  type t [@@deriving sexp, bin_io]
+       include Comparator.S with type t := t
+     end)
+    (Value : sig
+       type t [@@deriving sexp, bin_io]
 
-  val equal : t -> t -> bool
-end) : sig
+       val equal : t -> t -> bool
+     end) : sig
   type t = Value.t Base.Map.M(Key).t [@@deriving sexp_of]
 
   module Update : sig
@@ -28,15 +30,17 @@ end) : sig
   val empty : t
 end
 
-module Make_plain (Key : sig
-  type t [@@deriving sexp_of]
+module Make_plain
+    (Key : sig
+       type t [@@deriving sexp_of]
 
-  include Comparator.S with type t := t
-end) (Value : sig
-  type t [@@deriving sexp_of]
+       include Comparator.S with type t := t
+     end)
+    (Value : sig
+       type t [@@deriving sexp_of]
 
-  val equal : t -> t -> bool
-end) : sig
+       val equal : t -> t -> bool
+     end) : sig
   type t = Value.t Base.Map.M(Key).t [@@deriving sexp_of]
 
   module Update : sig
@@ -56,15 +60,17 @@ end) : sig
   val empty : t
 end
 
-module Make_with_value_diffs (Key : sig
-  type t [@@deriving sexp, bin_io]
+module Make_with_value_diffs
+    (Key : sig
+       type t [@@deriving sexp, bin_io]
 
-  include Comparator.S with type t := t
-end) (Value : sig
-  type t
+       include Comparator.S with type t := t
+     end)
+    (Value : sig
+       type t
 
-  include Legacy_diffable_intf.S with type t := t
-end) : sig
+       include Legacy_diffable_intf.S with type t := t
+     end) : sig
   module Update : sig
     module Diff : sig
       type t =
@@ -80,21 +86,23 @@ end) : sig
 
   include
     Legacy_diffable_intf.S
-      with type t = Value.t Base.Map.M(Key).t
-       and module Update := Update
+    with type t = Value.t Base.Map.M(Key).t
+     and module Update := Update
 
   val empty : t
 end
 
-module Make_plain_with_value_diffs (Key : sig
-  type t [@@deriving sexp_of]
+module Make_plain_with_value_diffs
+    (Key : sig
+       type t [@@deriving sexp_of]
 
-  include Comparator.S with type t := t
-end) (Value : sig
-  type t
+       include Comparator.S with type t := t
+     end)
+    (Value : sig
+       type t
 
-  include Legacy_diffable_intf.S_plain with type t := t
-end) : sig
+       include Legacy_diffable_intf.S_plain with type t := t
+     end) : sig
   module Update : sig
     module Diff : sig
       type t =
@@ -110,8 +118,8 @@ end) : sig
 
   include
     Legacy_diffable_intf.S_plain
-      with type t = Value.t Base.Map.M(Key).t
-       and module Update := Update
+    with type t = Value.t Base.Map.M(Key).t
+     and module Update := Update
 
   val empty : t
 end

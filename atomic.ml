@@ -1,10 +1,10 @@
 open Core
 
 module Make_plain (V : sig
-  type t [@@deriving sexp_of]
+    type t [@@deriving sexp_of]
 
-  val equal : t -> t -> bool
-end) =
+    val equal : t -> t -> bool
+  end) =
 struct
   module Update = struct
     module Diff = struct
@@ -37,10 +37,10 @@ struct
 end
 
 module Make (V : sig
-  type t [@@deriving bin_io, sexp]
+    type t [@@deriving bin_io, sexp]
 
-  val equal : t -> t -> bool
-end) =
+    val equal : t -> t -> bool
+  end) =
 struct
   module Plain = Make_plain (V)
 
@@ -91,7 +91,7 @@ let%test_module "tests" =
         ~shrinker:(Shrinker.tuple2 Int.quickcheck_shrinker Int.quickcheck_shrinker)
         ~sexp_of:[%sexp_of: t * t]
         ~f:(fun (from, to_) ->
-        [%test_result: t] ~expect:to_ (update from (diffs ~from ~to_)))
+          [%test_result: t] ~expect:to_ (update from (diffs ~from ~to_)))
     ;;
   end)
 ;;

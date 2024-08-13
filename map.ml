@@ -1,14 +1,16 @@
 open Core
 
-module Make_plain (Key : sig
-  type t [@@deriving sexp_of]
+module Make_plain
+    (Key : sig
+       type t [@@deriving sexp_of]
 
-  include Comparator.S with type t := t
-end) (Value : sig
-  type t [@@deriving sexp_of]
+       include Comparator.S with type t := t
+     end)
+    (Value : sig
+       type t [@@deriving sexp_of]
 
-  val equal : t -> t -> bool
-end) =
+       val equal : t -> t -> bool
+     end) =
 struct
   module Update = struct
     module Diff = struct
@@ -61,15 +63,17 @@ struct
   ;;
 end
 
-module Make (Key : sig
-  type t [@@deriving sexp, bin_io]
+module Make
+    (Key : sig
+       type t [@@deriving sexp, bin_io]
 
-  include Comparator.S with type t := t
-end) (Value : sig
-  type t [@@deriving sexp, bin_io]
+       include Comparator.S with type t := t
+     end)
+    (Value : sig
+       type t [@@deriving sexp, bin_io]
 
-  val equal : t -> t -> bool
-end) =
+       val equal : t -> t -> bool
+     end) =
 struct
   module Plain = Make_plain (Key) (Value)
 
@@ -149,15 +153,17 @@ let%test_module "tests of Make and Make_plain" =
   end)
 ;;
 
-module Make_plain_with_value_diffs (Key : sig
-  type t [@@deriving sexp_of]
+module Make_plain_with_value_diffs
+    (Key : sig
+       type t [@@deriving sexp_of]
 
-  include Comparator.S with type t := t
-end) (Value : sig
-  type t
+       include Comparator.S with type t := t
+     end)
+    (Value : sig
+       type t
 
-  include Legacy_diffable_intf.S_plain with type t := t
-end) =
+       include Legacy_diffable_intf.S_plain with type t := t
+     end) =
 struct
   module Update = struct
     module Diff = struct
@@ -166,7 +172,7 @@ struct
         | Change of Key.t * Value.Update.Diff.t
         | Add of Key.t * Value.Update.Diff.t
         | Idle of unit
-            (** We add a [unit] argument so matching the more common cases is more performant
+        (** We add a [unit] argument so matching the more common cases is more performant
             (no check for immediate vs. block). *)
       [@@deriving sexp_of]
 
@@ -282,14 +288,14 @@ struct
       from
       to_
       ~f:(fun acc (k, d) ->
-      match d with
-      | `Left _ -> Stored_reversed.snoc acc (Update.Diff.Remove k)
-      | `Right to_ ->
-        let diffs = Value.to_diffs to_ in
-        Stored_reversed.map_append acc diffs ~f:(fun x -> Update.Diff.Add (k, x))
-      | `Unequal (from, to_) ->
-        let diffs = Value.diffs ~from ~to_ in
-        Stored_reversed.map_append acc diffs ~f:(fun x -> Update.Diff.Change (k, x)))
+        match d with
+        | `Left _ -> Stored_reversed.snoc acc (Update.Diff.Remove k)
+        | `Right to_ ->
+          let diffs = Value.to_diffs to_ in
+          Stored_reversed.map_append acc diffs ~f:(fun x -> Update.Diff.Add (k, x))
+        | `Unequal (from, to_) ->
+          let diffs = Value.diffs ~from ~to_ in
+          Stored_reversed.map_append acc diffs ~f:(fun x -> Update.Diff.Change (k, x)))
     |> Stored_reversed.to_list
   ;;
 
@@ -308,15 +314,17 @@ struct
   ;;
 end
 
-module Make_with_value_diffs (Key : sig
-  type t [@@deriving sexp, bin_io]
+module Make_with_value_diffs
+    (Key : sig
+       type t [@@deriving sexp, bin_io]
 
-  include Comparator.S with type t := t
-end) (Value : sig
-  type t
+       include Comparator.S with type t := t
+     end)
+    (Value : sig
+       type t
 
-  include Legacy_diffable_intf.S with type t := t
-end) =
+       include Legacy_diffable_intf.S with type t := t
+     end) =
 struct
   module Plain = Make_plain_with_value_diffs (Key) (Value)
 
