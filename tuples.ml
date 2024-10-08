@@ -185,68 +185,66 @@ module Make6
          let backwards (a, b, c, d, e, f) = a, (b, c, d, e, f)
        end)
 
-let%test_module "tests" =
-  (module struct
-    module Diffable_int = struct
-      module U = struct
-        type t = int [@@deriving bin_io, equal, sexp]
-      end
-
-      include U
-      include Atomic.Make (U)
+module%test [@name "tests"] _ = struct
+  module Diffable_int = struct
+    module U = struct
+      type t = int [@@deriving bin_io, equal, sexp]
     end
 
-    module Diffable_float = struct
-      module U = struct
-        type t = float [@@deriving bin_io, equal, sexp]
-      end
+    include U
+    include Atomic.Make (U)
+  end
 
-      include U
-      include Atomic.Make (U)
+  module Diffable_float = struct
+    module U = struct
+      type t = float [@@deriving bin_io, equal, sexp]
     end
 
-    include
-      Make6 (Diffable_int) (Diffable_int) (Diffable_float) (Diffable_int) (Diffable_float)
-        (Diffable_float)
+    include U
+    include Atomic.Make (U)
+  end
 
-    type t = int * int * float * int * float * float [@@deriving compare, sexp]
+  include
+    Make6 (Diffable_int) (Diffable_int) (Diffable_float) (Diffable_int) (Diffable_float)
+      (Diffable_float)
 
-    let quickcheck_generator =
-      Quickcheck.Generator.tuple6
-        Int.quickcheck_generator
-        Int.quickcheck_generator
-        Float.quickcheck_generator
-        Int.quickcheck_generator
-        Float.quickcheck_generator
-        Float.quickcheck_generator
-    ;;
+  type t = int * int * float * int * float * float [@@deriving compare, sexp]
 
-    let quickcheck_shrinker =
-      Quickcheck.Shrinker.tuple6
-        Int.quickcheck_shrinker
-        Int.quickcheck_shrinker
-        Float.quickcheck_shrinker
-        Int.quickcheck_shrinker
-        Float.quickcheck_shrinker
-        Float.quickcheck_shrinker
-    ;;
+  let quickcheck_generator =
+    Quickcheck.Generator.tuple6
+      Int.quickcheck_generator
+      Int.quickcheck_generator
+      Float.quickcheck_generator
+      Int.quickcheck_generator
+      Float.quickcheck_generator
+      Float.quickcheck_generator
+  ;;
 
-    let%test_unit "make6 round-trip works" =
-      Quickcheck.test
-        quickcheck_generator
-        ~shrinker:quickcheck_shrinker
-        ~sexp_of:[%sexp_of: t]
-        ~f:(fun t -> [%test_result: t] ~expect:t (of_diffs (to_diffs t)))
-    ;;
+  let quickcheck_shrinker =
+    Quickcheck.Shrinker.tuple6
+      Int.quickcheck_shrinker
+      Int.quickcheck_shrinker
+      Float.quickcheck_shrinker
+      Int.quickcheck_shrinker
+      Float.quickcheck_shrinker
+      Float.quickcheck_shrinker
+  ;;
 
-    let%test_unit "make6 diff/update works" =
-      let open Quickcheck in
-      Quickcheck.test
-        (Generator.tuple2 quickcheck_generator quickcheck_generator)
-        ~shrinker:(Shrinker.tuple2 quickcheck_shrinker quickcheck_shrinker)
-        ~sexp_of:[%sexp_of: t * t]
-        ~f:(fun (from, to_) ->
-          [%test_result: t] ~expect:to_ (update from (diffs ~from ~to_)))
-    ;;
-  end)
-;;
+  let%test_unit "make6 round-trip works" =
+    Quickcheck.test
+      quickcheck_generator
+      ~shrinker:quickcheck_shrinker
+      ~sexp_of:[%sexp_of: t]
+      ~f:(fun t -> [%test_result: t] ~expect:t (of_diffs (to_diffs t)))
+  ;;
+
+  let%test_unit "make6 diff/update works" =
+    let open Quickcheck in
+    Quickcheck.test
+      (Generator.tuple2 quickcheck_generator quickcheck_generator)
+      ~shrinker:(Shrinker.tuple2 quickcheck_shrinker quickcheck_shrinker)
+      ~sexp_of:[%sexp_of: t * t]
+      ~f:(fun (from, to_) ->
+        [%test_result: t] ~expect:to_ (update from (diffs ~from ~to_)))
+  ;;
+end

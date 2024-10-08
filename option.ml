@@ -83,44 +83,42 @@ struct
       with module Update := Plain.Update)
 end
 
-let%test_module "diffable option" =
-  (module struct
-    module X = Atomic.Make (Int)
-    module O = Make (X)
-    module O2 = Make (O)
+module%test [@name "diffable option"] _ = struct
+  module X = Atomic.Make (Int)
+  module O = Make (X)
+  module O2 = Make (O)
 
-    let test1 ~one ~two =
-      [%test_result: int option] (O.of_diffs (O.to_diffs one)) ~expect:one;
-      [%test_result: int option] (O.of_diffs (O.to_diffs two)) ~expect:two;
-      [%test_result: int option] (O.update one (O.diffs ~from:one ~to_:two)) ~expect:two;
-      [%test_result: int option] (O.update two (O.diffs ~from:two ~to_:one)) ~expect:one
-    ;;
+  let test1 ~one ~two =
+    [%test_result: int option] (O.of_diffs (O.to_diffs one)) ~expect:one;
+    [%test_result: int option] (O.of_diffs (O.to_diffs two)) ~expect:two;
+    [%test_result: int option] (O.update one (O.diffs ~from:one ~to_:two)) ~expect:two;
+    [%test_result: int option] (O.update two (O.diffs ~from:two ~to_:one)) ~expect:one
+  ;;
 
-    let test2 ~one ~two =
-      [%test_result: int option option] (O2.of_diffs (O2.to_diffs one)) ~expect:one;
-      [%test_result: int option option] (O2.of_diffs (O2.to_diffs two)) ~expect:two;
-      [%test_result: int option option]
-        (O2.update one (O2.diffs ~from:one ~to_:two))
-        ~expect:two;
-      [%test_result: int option option]
-        (O2.update two (O2.diffs ~from:two ~to_:one))
-        ~expect:one
-    ;;
+  let test2 ~one ~two =
+    [%test_result: int option option] (O2.of_diffs (O2.to_diffs one)) ~expect:one;
+    [%test_result: int option option] (O2.of_diffs (O2.to_diffs two)) ~expect:two;
+    [%test_result: int option option]
+      (O2.update one (O2.diffs ~from:one ~to_:two))
+      ~expect:two;
+    [%test_result: int option option]
+      (O2.update two (O2.diffs ~from:two ~to_:one))
+      ~expect:one
+  ;;
 
-    let%test_unit "diffs" =
-      test1 ~one:None ~two:None;
-      test1 ~one:None ~two:(Some 23);
-      test1 ~one:(Some 23) ~two:None;
-      test1 ~one:(Some 23) ~two:(Some 42);
-      test2 ~one:None ~two:None;
-      test2 ~one:None ~two:(Some None);
-      test2 ~one:None ~two:(Some (Some 23));
-      test2 ~one:(Some None) ~two:None;
-      test2 ~one:(Some None) ~two:(Some None);
-      test2 ~one:(Some None) ~two:(Some (Some 23));
-      test2 ~one:(Some (Some 23)) ~two:None;
-      test2 ~one:(Some (Some 23)) ~two:(Some None);
-      test2 ~one:(Some (Some 23)) ~two:(Some (Some 23))
-    ;;
-  end)
-;;
+  let%test_unit "diffs" =
+    test1 ~one:None ~two:None;
+    test1 ~one:None ~two:(Some 23);
+    test1 ~one:(Some 23) ~two:None;
+    test1 ~one:(Some 23) ~two:(Some 42);
+    test2 ~one:None ~two:None;
+    test2 ~one:None ~two:(Some None);
+    test2 ~one:None ~two:(Some (Some 23));
+    test2 ~one:(Some None) ~two:None;
+    test2 ~one:(Some None) ~two:(Some None);
+    test2 ~one:(Some None) ~two:(Some (Some 23));
+    test2 ~one:(Some (Some 23)) ~two:None;
+    test2 ~one:(Some (Some 23)) ~two:(Some None);
+    test2 ~one:(Some (Some 23)) ~two:(Some (Some 23))
+  ;;
+end

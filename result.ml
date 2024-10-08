@@ -105,46 +105,44 @@ module Make (O : Legacy_diffable_intf.S) (E : Legacy_diffable_intf.S) = struct
       with module Update := Plain.Update)
 end
 
-let%test_module "diffable option" =
-  (module struct
-    module X = Atomic.Make (Int)
-    module O = Make (X) (X)
-    module O2 = Make (O) (O)
+module%test [@name "diffable option"] _ = struct
+  module X = Atomic.Make (Int)
+  module O = Make (X) (X)
+  module O2 = Make (O) (O)
 
-    type t = (int, int) Result.t [@@deriving sexp, compare]
+  type t = (int, int) Result.t [@@deriving sexp, compare]
 
-    let test1 ~one ~two =
-      [%test_result: t] (O.of_diffs (O.to_diffs one)) ~expect:one;
-      [%test_result: t] (O.of_diffs (O.to_diffs two)) ~expect:two;
-      [%test_result: t] (O.update one (O.diffs ~from:one ~to_:two)) ~expect:two;
-      [%test_result: t] (O.update two (O.diffs ~from:two ~to_:one)) ~expect:one
-    ;;
+  let test1 ~one ~two =
+    [%test_result: t] (O.of_diffs (O.to_diffs one)) ~expect:one;
+    [%test_result: t] (O.of_diffs (O.to_diffs two)) ~expect:two;
+    [%test_result: t] (O.update one (O.diffs ~from:one ~to_:two)) ~expect:two;
+    [%test_result: t] (O.update two (O.diffs ~from:two ~to_:one)) ~expect:one
+  ;;
 
-    let test2 ~one ~two =
-      [%test_result: (t, t) Result.t] (O2.of_diffs (O2.to_diffs one)) ~expect:one;
-      [%test_result: (t, t) Result.t] (O2.of_diffs (O2.to_diffs two)) ~expect:two;
-      [%test_result: (t, t) Result.t]
-        (O2.update one (O2.diffs ~from:one ~to_:two))
-        ~expect:two;
-      [%test_result: (t, t) Result.t]
-        (O2.update two (O2.diffs ~from:two ~to_:one))
-        ~expect:one
-    ;;
+  let test2 ~one ~two =
+    [%test_result: (t, t) Result.t] (O2.of_diffs (O2.to_diffs one)) ~expect:one;
+    [%test_result: (t, t) Result.t] (O2.of_diffs (O2.to_diffs two)) ~expect:two;
+    [%test_result: (t, t) Result.t]
+      (O2.update one (O2.diffs ~from:one ~to_:two))
+      ~expect:two;
+    [%test_result: (t, t) Result.t]
+      (O2.update two (O2.diffs ~from:two ~to_:one))
+      ~expect:one
+  ;;
 
-    let%test_unit "diffs" =
-      let values =
-        let%bind.List number = [ 1; 2; 3; 11; 20; 42; 99; 1024 ] in
-        [ Ok number; Error number ]
-      in
-      List.iter (List.cartesian_product values values) ~f:(fun (one, two) ->
-        test1 ~one ~two);
-      let values2 =
-        let%bind.List number = [ 1; 2; 5; 8; 99 ] in
-        let%bind.List inner = [ Ok number; Error number ] in
-        [ Ok inner; Error inner ]
-      in
-      List.iter (List.cartesian_product values2 values2) ~f:(fun (one, two) ->
-        test2 ~one ~two)
-    ;;
-  end)
-;;
+  let%test_unit "diffs" =
+    let values =
+      let%bind.List number = [ 1; 2; 3; 11; 20; 42; 99; 1024 ] in
+      [ Ok number; Error number ]
+    in
+    List.iter (List.cartesian_product values values) ~f:(fun (one, two) ->
+      test1 ~one ~two);
+    let values2 =
+      let%bind.List number = [ 1; 2; 5; 8; 99 ] in
+      let%bind.List inner = [ Ok number; Error number ] in
+      [ Ok inner; Error inner ]
+    in
+    List.iter (List.cartesian_product values2 values2) ~f:(fun (one, two) ->
+      test2 ~one ~two)
+  ;;
+end
