@@ -1,4 +1,6 @@
+module Atomic_ = Atomic
 open Core
+module Atomic = Atomic_
 
 module Make_plain (X : sig
     type t

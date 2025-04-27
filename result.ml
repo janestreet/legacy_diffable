@@ -1,4 +1,6 @@
+module Atomic_ = Atomic
 open Core
+module Atomic = Atomic_
 
 module Make_plain (O : Legacy_diffable_intf.S_plain) (E : Legacy_diffable_intf.S_plain) =
 struct
@@ -9,7 +11,8 @@ struct
         | Change_error of E.Update.Diff.t
       [@@deriving sexp_of, variants]
 
-      (** Return the longest suffix of a list of [t] which is the same case of the variant. *)
+      (** Return the longest suffix of a list of [t] which is the same case of the
+          variant. *)
       let longest_suffix_with_same_variant =
         let rec go xs ~start_of_group =
           match xs with

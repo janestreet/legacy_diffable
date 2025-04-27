@@ -15,7 +15,7 @@ depends: [
   "ppx_jane"
   "stored_reversed"
   "streamable"
-  "dune"            {>= "3.11.0"}
+  "dune"            {>= "3.17.0"}
 ]
 available: arch != "arm32" & arch != "x86_32"
 synopsis: "An interface for diffs."
