@@ -1,4 +1,6 @@
+module Atomic_ = Atomic
 open! Core
+module Atomic = Atomic_
 
 module Make_plain
     (S : Legacy_diffable_intf.S_plain)
