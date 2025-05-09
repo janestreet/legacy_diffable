@@ -204,14 +204,14 @@ struct
         | In_group { key; type_; group; diffs } ->
           (match type_, diffs with
            | `Change, (Change (next_key, _) as change) :: diffs
-             when Key.comparator.compare next_key key = 0 ->
+             when (Comparator.compare Key.comparator) next_key key = 0 ->
              Sequence.Step.Skip
                { state =
                    In_group
                      { key; type_; diffs; group = Stored_reversed.snoc group change }
                }
            | `Add, (Add (next_key, _) as add) :: diffs
-             when Key.comparator.compare next_key key = 0 ->
+             when (Comparator.compare Key.comparator) next_key key = 0 ->
              Sequence.Step.Skip
                { state =
                    In_group { key; type_; diffs; group = Stored_reversed.snoc group add }
