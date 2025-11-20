@@ -42,8 +42,8 @@ struct
   let update_or_of_diffs (type arg) (op : (t, arg) Update_or_of_diffs.t) (t : arg) diffs
     : t
     =
-    (* Every time we switch to ok/error we forget any value before
-       that point, so we can just look at the last group with the same kind.
+    (* Every time we switch to ok/error we forget any value before that point, so we can
+       just look at the last group with the same kind.
     *)
     match Update.Diff.longest_suffix_with_same_variant diffs with
     | [] ->

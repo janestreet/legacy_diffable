@@ -19,8 +19,8 @@ struct
       type t =
         | Remove of Key.t
         | Add of Key.t * Value.t
-        (* We add a [unit] argument so matching the more common cases
-           is more performant (no check for immediate vs. block). *)
+        (* We add a [unit] argument so matching the more common cases is more performant
+           (no check for immediate vs. block). *)
         | Idle of unit
       [@@deriving sexp_of]
 
